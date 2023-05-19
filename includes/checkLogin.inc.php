@@ -8,9 +8,9 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
     session_unset();     // unset $_SESSION variable for the run-time 
     session_destroy();   // destroy session data in storage
 }
-$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 
 if (isset($_SESSION["logstate"])) {
+    $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
     if (!$_SESSION["logstate"]) {
         session_unset();
         session_destroy();

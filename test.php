@@ -1,5 +1,6 @@
 <?php
 require 'vendor/autoload.php';
+echo __DIR__;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__); //Notice the Namespace and Class
 $dotenv->load();
 $s3_bucket = $_ENV['S3_BUCKET'];

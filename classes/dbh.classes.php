@@ -1,4 +1,9 @@
 <?php
+require $_SERVER['DOCUMENT_ROOT'].'/Home/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable( $_SERVER['DOCUMENT_ROOT'].'/Home'); //Notice the Namespace and Class
+$dotenv->load();
+
+//  $_ENV[""];
 class Dbh_class
 {
     protected $dbh;
@@ -6,9 +11,12 @@ class Dbh_class
     protected function connect()
     {
         try {
-            $username = "root";
-            $password = "";
-            $dbh = new \PDO('mysql:host:localhost;port=3306;dbname=Chess_Log', $username, $password);
+            $username = $_ENV["DB_USER"];
+            $password = $_ENV["DB_PWD"];
+            $host = $_ENV["Host"];
+            $port = $_ENV["DB_PORT"];
+            $dbname = $_ENV["DB_NAME"];
+            $dbh = new \PDO('mysql:host:' . $host . ';port=' . $port . ';dbname=' . $dbname, $username, $password);
             return $dbh;
         } catch (PDOException $err) {
             print("error" . $err->getMessage() . "\n");
@@ -20,10 +28,15 @@ class Dbh_class
         $options = array(
             PDO::ATTR_ERRMODE       => PDO::ERRMODE_EXCEPTION
         );
+        $username = $_ENV["DB_USER"];
+        $password = $_ENV["DB_PWD"];
+        $host = $_ENV["Host"];
+        $port = $_ENV["DB_PORT"];
+        $dbname = $_ENV["DB_NAME"];
         $username = "root";
         $password = "";
         try {
-            $this->dbh = new \PDO('mysql:host:localhost;port=3306;dbname=Chess_Log', $username, $password, $options);
+            $this->dbh = new \PDO('mysql:host:' . $host . ';port=' . $port . ';dbname=' . $dbname, $username, $password);
         } catch (PDOException $err) {
             print("error" . $err->getMessage() . "\n");
             die();
