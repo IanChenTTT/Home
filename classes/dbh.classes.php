@@ -1,4 +1,6 @@
 <?php
+// IMPORTANT USE  var_dump($_SERVER['DOCUMENT_ROOT']) 
+// CHECK CURRENT APACHE DIRECTORY, might different from __DIR__
 require $_SERVER['DOCUMENT_ROOT'].'/Home/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable( $_SERVER['DOCUMENT_ROOT'].'/Home'); //Notice the Namespace and Class
 $dotenv->load();
@@ -33,8 +35,6 @@ class Dbh_class
         $host = $_ENV["Host"];
         $port = $_ENV["DB_PORT"];
         $dbname = $_ENV["DB_NAME"];
-        $username = "root";
-        $password = "";
         try {
             $this->dbh = new \PDO('mysql:host:' . $host . ';port=' . $port . ';dbname=' . $dbname, $username, $password);
         } catch (PDOException $err) {
