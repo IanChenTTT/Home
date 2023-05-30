@@ -12,6 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
   <script src="Style.js" defer></script>
+  <script type="module" src="./util/Game.js" defer></script>
+  <script type="module" src="./util/GameBoard.js" defer></script>
+  <script type="module" src="index.js" defer></script>
 </head>
 
 <body>
@@ -48,7 +51,10 @@
     </nav>
     <div id="main_wrapper">
       <section id="section1">
-        <h3>登入</h3>
+        <h3>Player record</h3>
+        <ul id="Player_Step">
+
+        </ul>
       </section>
       <main>
         <div id="Front"></div>
