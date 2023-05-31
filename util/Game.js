@@ -1,11 +1,11 @@
-// const GameBoard = require("./GameBoard");
-// import {GameBoard} from "/Home/util/GameBoard.js";
 import GameBoard from "./GameBoard.js";
 export default class Game extends GameBoard {
   #PlayerColorBoard = null;
   #CurrentGameBoard = null;
   #Player1Color = "W";
+  recordCounter = 0;
   #Player2Color = "B";
+  #CurrentTarget = [];
   constructor() {
     super();
     this.#PlayerColorBoard = [
@@ -34,14 +34,39 @@ export default class Game extends GameBoard {
     this.#PlayerColorBoard[y1][x2] = this.#PlayerColorBoard[y][x];
     this.#PlayerColorBoard[y][x] = "";
   }
-  ColorBoard_XY(x, y) {
+  ColorBoard_XY(y, x) {
+    console.log(this.#PlayerColorBoard[y][x], " and ", this.UserColor);
     return this.#PlayerColorBoard[y][x];
+  }
+  getSearchHistory(y, x) {
+    return this.#CurrentGameBoard[y][x];
   }
   get UserHistoryBoard() {
     return this.#CurrentGameBoard;
   }
   get UserColorBoard() {
     return this.#PlayerColorBoard;
+  }
+  setrecordCounter(){
+    this.recordCounter++;
+  }
+  get recordCounter(){
+    return this.recordCounter;
+  }
+  set UserColor(Color) {
+    this.#Player1Color = Color;
+  }
+  get UserColor() {
+    return this.#Player1Color;
+  }
+  /**
+   * @param {target[]} Target
+   */
+  set CurrentTarget(Target) {
+    this.#CurrentTarget = Target;
+  }
+  get CurrentTarget() {
+    return this.#CurrentTarget;
   }
   //   conssider extreme case (0,0) (7,7) (0,7) (7,0)
   #Rooksmove(y, x) {
@@ -190,35 +215,41 @@ export default class Game extends GameBoard {
   async #Queenmove(y, x) {
     return new Promise(async (resolve) => {
       let temp = [];
-      temp.push(await this.#Bishopmove(y, x));
-      temp.push(await this.#Rooksmove(y, x));
+      let temp2 = await this.#Bishopmove(y, x);
+      temp = temp2.concat(await this.#Rooksmove(y, x));
       resolve(temp);
     });
   }
   #Kingmove(y, x) {
     return new Promise((resolve) => {
-      let temp = [];
-      for (let y1 = y - 1; y1 <= y + 1; y1++) {
-        for (let x2 = x - 1; x2 <= x + 1; x2++) {
-          setTimeout(() => {
-            if (x2 >= 0 && x2 < 8 && y1 < 8 && y1 >= 0) {
-              if (Object.values(this.#CurrentGameBoard[y1][x2]) === "")
-                temp.push(`${y1}_${x1}`);
-            }
-          }, 0);
-        }
-      }
       setTimeout(() => {
-        resolve(temp);
+        // console.log(this.#gameHistory[y-10][x-10]);
+        let test = [];
+        // y-1 x-1
+        y - 1 >= 0 && x - 1 >= 0 ? test.push(`${y - 1}_${x - 1}`) : null;
+        y - 1 >= 0 ? test.push(`${y - 1}_${x}`) : null;
+        y - 1 >= 0 && x + 1 < 8 ? test.push(`${y - 1}_${x + 1}`) : null;
+        x - 1 >= 0 ? test.push(`${y}_${x - 1}`) : null;
+        x + 1 < 8 ? test.push(`${y}_${x + 1}`) : null;
+        y + 1 < 8 && x - 1 >= 0 ? test.push(`${y + 1}_${x - 1}`) : null;
+        y + 1 < 8 ? test.push(`${y + 1}_${x}`) : null;
+        y + 1 < 8 && x + 1 < 8 ? test.push(`${y + 1}_${x + 1}`) : null;
+        resolve(test);
       }, 0);
     });
   }
   #Pawnmove(y, x) {
     return new Promise((resolve) => {
       let test = [];
-
-      if (y - 1 < 8) test.push(`${y - 1}_${x}`);
-      if (y - 2 < 8) test.push(`${y - 2}_${x}`);
+      if (this.#Player1Color === "W") {
+        if (y - 1 >= 0) test.push(`${y - 1}_${x}`);
+        if (y - 2 >= 0) test.push(`${y - 2}_${x}`);
+      }
+      else
+      {
+        if(y + 1 < 8) test.push(`${y+1}_${x}`)
+        if(y + 2 < 8) test.push(`${y+2}_${x}`)
+      }
       console.log(test);
       resolve(test);
     });
@@ -251,26 +282,16 @@ export default class Game extends GameBoard {
         holder = await this.#Pawnmove(y, x);
         break;
     }
+    this.CurrentTarget = holder;
     // ex: [ '5_0', '6_3', '5_2' ] string[0] string [2]
-    // let holder2 = [] ;
-    // let holder3 = []
-    //  holder.forEach(value => {
-    //   let Player2y = 7 - value[0];
-    //   let Player2x = 7 - value[2];
-    //   let player2 = `${Player2y}_${Player2x}`
-    //   if(this.#PlayerColorBoard[value[0]][value[2]] !== this.#Player1Color)
-    //     {
-    //     holder2.push(value);
-    //     holder3.push(player2)
-    //     }
-    // });
-    // this.#PlayerTarget = holder2;
-    // this.#Player2Target = holder3;
-    // return holder2;
+    // Handle same color overllap
+    let holder2 = [];
+    holder.forEach((value) => {
+      if (this.#PlayerColorBoard[value[0]][value[2]] !== this.#Player1Color) {
+        holder2.push(value);
+      }
+    });
+    this.#CurrentTarget = holder2;
+    return holder2;
   }
 }
-let test = new Game();
-console.table(test.UserColorBoard);
-test.setUserHistoryBoard(0, 0, 7, 7);
-console.table(test.UserHistoryBoard);
-// module.exports = Game;

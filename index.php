@@ -1,4 +1,4 @@
-<?php include("./includes/checkLogin.inc.php");?>
+<?php include("./includes/checkLogin.inc.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +25,6 @@
         <li>歷程記錄</li>
         <li>歷程記錄</li>
         <?php
-        // echo $url;
         if (!isset($_SESSION["userid"])) {
         ?>
           <li>
@@ -53,7 +52,13 @@
       <section id="section1">
         <h3>Player record</h3>
         <ul id="Player_Step">
-
+          <table>
+            <tr>
+              <th>Turn</th>
+              <th>White</th>
+              <th>Black</th>
+            </tr>
+          </table>
         </ul>
       </section>
       <main>
@@ -61,6 +66,9 @@
         <div id="Back"></div>
       </main>
       <section id="section2">
+          <?php
+        if (!isset($_SESSION["userid"])) {
+        ?>
         <div class="card">
           <div class="card-content">
             <h2 class="card-title">線上西洋棋對戰</h2>
@@ -69,6 +77,18 @@
             <button class="button create">Create</button>
 
           </div>
+        <?php }
+         else{
+        ?>
+        <div class="card">
+          <div class="card-content">
+            <h2 class="card-title">線上西洋棋對戰</h2>
+            <p class="card-body">歡迎來到線上西洋棋對戰!!!<br> 請登入遊戲或是創建帳號 </p>
+            <a href="localhost/Loby">前往大廳</a>
+          </div>
+          <?php
+          }
+          ?>
       </section>
     </div>
     <footer></footer>

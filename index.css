@@ -125,7 +125,10 @@ main {
   z-index: 10;
   background-repeat: no-repeat;
 }
-
+.MoveAble {
+  background-color: rgba(24, 227, 24, 0.56);
+  box-shadow: 10px 10px;
+}
 .ColorBlock {
   background-color: #c5b1aae1;
 }
@@ -160,7 +163,7 @@ section {
     background-color: rgba(241, 236, 236, 0.863);
     width: 100%;
     margin: 0em;
-    font-size: clamp(1rem, -1.5rem + 2.5vw, 3rem);
+    font-size: clamp(1rem, -1.5rem + 3.5vw, 3rem);
     text-align: center;
 }
 #Player_Step{
@@ -170,6 +173,17 @@ section {
   height: 80%;
 
 }
+#Player_Step table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow-anchor: auto;
+}
+#Player_Step td, th {
+  border: 3px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
 /* LOGIN  CSS this DESIGN by  */
 .card {
   color: var(--clr-neutral-100);
