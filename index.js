@@ -22,6 +22,12 @@ function AddDragEvent(element) {
   });
 }
 function dragStart(event, element) {
+  if(game.CheckMate == true)
+    {
+    alert("game has end");
+    event.preventDefault();
+    return null;
+    }
   event.dataTransfer.setData("Text", event.target.className);
   const data = event.dataTransfer.getData("text");
   console.log(data);
@@ -36,20 +42,21 @@ function dragStart(event, element) {
   } else {
     //  Target return like Y_X: 5_0
     (async () => {
-      let target = await game.getTarget(Y, X);
-      if (target[0] != "");
-      {
-        console.log(target);
+      let target = await game.getTarget(Y, X, "Player");
+      if ((target[0] != "") != "-1") {
+        // console.log(target);
         target.forEach((element) => {
           let hold = document.getElementsByClassName(element);
           hold[0].classList.add("MoveAble");
         });
+      } else if (target[0] === "-1") {
+        event.dataTransfer.setData("Text", "");
+        event.preventDefault();
       }
     })();
   }
 }
 function dragEnd(event, element) {
-  // let target = game.getTarget(Y, X);
   if (game.CurrentTarget[0] != "") {
     game.CurrentTarget.forEach((element) => {
       let hold = document.getElementsByClassName(element);
@@ -91,14 +98,25 @@ function AddDropEvent(element) {
         element.classList.add("ChessPiece", "CanDrag");
         game.setUserHistoryBoard(y, x, y1, x1);
         game.setUserColorBoard(y, x, y1, x1);
-        let result =Object.entries(game.getSearchHistory(y1,x1));
+        (async () => {
+          let target = await game.getTarget(y1, x1, "King");
+          if (target !== "-1" && target !== "-2") {
+            let hold = document.getElementsByClassName(target);
+            console.log(hold[0]);
+            hold[0].classList.add("Check");
+          }
+          if (target === "-3") console.log("check");
+          if (game.CheckMate) console.log("lose");
+        })();
+
+        let result = Object.entries(game.getSearchHistory(y1, x1));
         // etc: ["a4","K"]
         if (game.UserColor === "W") {
           game.setrecordCounter();
-          CreateRecordDOM(game.recordCounter,result[0]);
+          CreateRecordDOM(game.recordCounter, result[0]);
           game.UserColor = "B";
         } else {
-          CreateRecordDOM_Black(game.recordCounter,result[0]);
+          CreateRecordDOM_Black(game.recordCounter, result[0]);
           game.UserColor = "W";
         }
       }
@@ -115,7 +133,7 @@ function RemoveDragEvent(element) {
     dragEnd(event, this);
   });
 }
-function CreateRecordDOM(counter,result) {
+function CreateRecordDOM(counter, result) {
   const record = document.querySelector("table");
   const tr = document.createElement("tr");
   tr.setAttribute("id", `MOVE${counter}`);
@@ -127,8 +145,8 @@ function CreateRecordDOM(counter,result) {
   tr.appendChild(td2);
   record.appendChild(tr);
 }
-function CreateRecordDOM_Black(counter,result){
- let tr = document.querySelector(`#MOVE${counter}`)
+function CreateRecordDOM_Black(counter, result) {
+  let tr = document.querySelector(`#MOVE${counter}`);
   const td = document.createElement("td");
   td.innerHTML = result;
   tr.appendChild(td);

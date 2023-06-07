@@ -137,7 +137,10 @@ main {
   background-color: rgba(24, 227, 24, 0.56);
   box-shadow: 10px 10px;
 }
-
+.Check{
+  background-color: rgba(227, 61, 24, 0.56);
+  box-shadow: 10px 10px;
+}
 .ColorBlock {
   background-color: #c5b1aae1;
 }

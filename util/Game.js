@@ -6,6 +6,15 @@ export default class Game extends GameBoard {
   recordCounter = 0;
   #Player2Color = "B";
   #CurrentTarget = [];
+  #checkState = false;
+  #KingLocate = {
+    BlackX: 4,
+    BlackY: 0,
+    WhiteX: 4,
+    WhiteY: 7,
+  };
+  #KingThreat = new Map();
+  CheckMate = false;
   constructor() {
     super();
     this.#PlayerColorBoard = [
@@ -25,7 +34,12 @@ export default class Game extends GameBoard {
     let second = Object.entries(this.#CurrentGameBoard[y1][x2]);
     let temp = first[0][0];
     let temp1 = second[0][0];
+    let target = {
+      X: x,
+      Y: y,
+    };
     console.log(this.#CurrentGameBoard[y][x][temp], "Settting Board");
+    if (this.#CurrentGameBoard[y][x][temp] === "K") this.Kinglocation = target;
     this.#CurrentGameBoard[y1][x2][temp1] = this.#CurrentGameBoard[y][x][temp];
     this.#CurrentGameBoard[y][x][temp] = "";
     // Object.values(this.#CurrentGameBoard[y][x])="";
@@ -35,7 +49,12 @@ export default class Game extends GameBoard {
     this.#PlayerColorBoard[y][x] = "";
   }
   ColorBoard_XY(y, x) {
-    console.log(this.#PlayerColorBoard[y][x], " and ", this.UserColor);
+    console.log(
+      `${y}_${x}`,
+      this.#PlayerColorBoard[y][x],
+      " and ",
+      this.UserColor
+    );
     return this.#PlayerColorBoard[y][x];
   }
   getSearchHistory(y, x) {
@@ -68,6 +87,20 @@ export default class Game extends GameBoard {
   get CurrentTarget() {
     return this.#CurrentTarget;
   }
+  get checkState() {
+    return this.#checkState;
+  }
+  set Kinglocation(target) {
+    console.log(target);
+    if (this.#Player1Color == "W") {
+      this.#KingLocate.WhiteX = target.X;
+      this.#KingLocate.WhiteY = target.Y;
+    }
+    if (this.#Player1Color == "B") {
+      this.#KingLocate.BlackX = target.X;
+      this.#KingLocate.BlackY = target.Y;
+    }
+  }
   //   conssider extreme case (0,0) (7,7) (0,7) (7,0)
   #Rooksmove(y, x) {
     return new Promise((resolve, reject) => {
@@ -85,7 +118,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock === false) {
             isBlock = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y}_${x1}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y}_${x1}`);
           } else if (isBlock === false) Arr.push(`${y}_${x1}`);
         }, 0);
       }
@@ -98,7 +131,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock1 === false) {
             isBlock1 = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y}_${x2}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y}_${x2}`);
           } else if (isBlock1 === false) Arr.push(`${y}_${x2}`);
         }, 0);
       }
@@ -110,7 +143,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock2 === false) {
             isBlock2 = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y1}_${x}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y1}_${x}`);
           } else if (isBlock2 === false) Arr.push(`${y1}_${x}`);
         }, 0);
       }
@@ -122,7 +155,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock3 === false) {
             isBlock3 = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y1}_${x}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y2}_${x}`);
           } else if (isBlock3 === false) Arr.push(`${y2}_${x}`);
         }, 0);
       }
@@ -165,8 +198,8 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock === false) {
             isBlock = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y2}_${x1}`);
-          } else if (isBlock === false) Arr.push(`${y2}_${x1}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y1}_${x1}`);
+          } else if (isBlock === false) Arr.push(`${y1}_${x1}`);
         }, 0);
       }
       for (let x2 = x - 1, y2 = y + 1; x2 >= 0 && y2 < 8; x2--, y2++) {
@@ -178,7 +211,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock1 === false) {
             isBlock1 = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y2}_${x2}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y2}_${x2}`);
           } else if (isBlock1 === false) Arr.push(`${y2}_${x2}`);
         }, 0);
       }
@@ -190,7 +223,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock2 === false) {
             isBlock2 = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y3}_${x3}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y3}_${x3}`);
           } else if (isBlock2 === false) Arr.push(`${y3}_${x3}`);
         }, 0);
       }
@@ -202,7 +235,7 @@ export default class Game extends GameBoard {
           tempArr.push(a[0].toString());
           if (tempArr[0] !== "" && isBlock3 === false) {
             isBlock3 = true;
-            if (tempArr[0] === this.#Player2Color) Arr.push(`${y4}_${x4}`);
+            if (tempArr[0] !== this.#Player1Color) Arr.push(`${y4}_${x4}`);
           } else if (isBlock3 === false) Arr.push(`${y4}_${x4}`);
         }, 0);
       }
@@ -247,63 +280,132 @@ export default class Game extends GameBoard {
         //   test.push(`${y - 2}_${x}`);
         // }
         // else if (y - 1 >= 0 && this.ColorBoard_XY(y - 1, x) === "") test.push(`${y - 1}_${x}`);
-       if (this.ColorBoard_XY(y - 2, x) === "" && y ===6) test.push(`${y - 2}_${x}`);
-       if (this.ColorBoard_XY(y - 1, x) === "") test.push(`${y - 1}_${x}`);
-       if (this.ColorBoard_XY(y - 1, x - 1) === "B") test.push(`${y - 1}_${x - 1}`);
-       if (this.ColorBoard_XY(y - 1, x + 1) === "B") test.push(`${y - 1}_${x + 1}`);
+        if (this.ColorBoard_XY(y - 2, x) === "" && y === 6)
+          test.push(`${y - 2}_${x}`);
+        if (this.ColorBoard_XY(y - 1, x) === "") test.push(`${y - 1}_${x}`);
+        if (this.ColorBoard_XY(y - 1, x - 1) === "B")
+          test.push(`${y - 1}_${x - 1}`);
+        if (this.ColorBoard_XY(y - 1, x + 1) === "B")
+          test.push(`${y - 1}_${x + 1}`);
       } else {
         // if (y === 1) {
         //   test.push(`${y + 1}_${x}`);
         //   test.push(`${y + 2}_${x}`);
         // }
         // else if (y + 1 < 8 && this.ColorBoard_XY(y+1,x) === "") test.push(`${y + 1}_${x}`);
-       if (this.ColorBoard_XY(y + 2, x) === "" && y === 1) test.push(`${y + 2}_${x}`);
-       if (this.ColorBoard_XY(y + 1, x) === "") test.push(`${y + 1}_${x}`);
-       if (this.ColorBoard_XY(y + 1, x - 1) === "W") test.push(`${y + 1}_${x - 1}`);
-       if (this.ColorBoard_XY(y + 1, x + 1) === "W") test.push(`${y + 1}_${x + 1}`);
+        if (this.ColorBoard_XY(y + 2, x) === "" && y === 1)
+          test.push(`${y + 2}_${x}`);
+        if (this.ColorBoard_XY(y + 1, x) === "") test.push(`${y + 1}_${x}`);
+        if (this.ColorBoard_XY(y + 1, x - 1) === "W")
+          test.push(`${y + 1}_${x - 1}`);
+        if (this.ColorBoard_XY(y + 1, x + 1) === "W")
+          test.push(`${y + 1}_${x + 1}`);
       }
-      console.log(test);
       resolve(test);
     });
   }
-
-  async getTarget(...target) {
-    let y = target[0];
-    let x = target[1];
+  /**
+   * @param {Y, X , "Player"} Target
+   * @param {Y, X , "King"} Target
+   */
+  async getTarget(...origin) {
+    let y = origin[0];
+    let x = origin[1];
     let current = this.#CurrentGameBoard[y][x];
     let a = Object.values(current);
-    let holder = [];
+    if (this.#checkState && a[0][0].toString() != "K") {
+      return ["-1"];
+    }
+    let target = [];
     // Object values return array [['R','W']]
     switch (a[0][0].toString()) {
       case "R":
-        holder = await this.#Rooksmove(y, x);
+        target = await this.#Rooksmove(y, x);
         break;
       case "N":
-        holder = await this.#Knightmove(y, x);
+        target = await this.#Knightmove(y, x);
         break;
       case "B":
-        holder = await this.#Bishopmove(y, x);
+        target = await this.#Bishopmove(y, x);
         break;
       case "Q":
-        holder = await this.#Queenmove(y, x);
+        target = await this.#Queenmove(y, x);
         break;
       case "K":
-        holder = await this.#Kingmove(y, x);
+        target = await this.#Kingmove(y, x);
         break;
       case "P":
-        holder = await this.#Pawnmove(y, x);
+        target = await this.#Pawnmove(y, x);
         break;
     }
-    this.CurrentTarget = holder;
+    if (origin[2] === "Player") {
+      return this.#setTarget(target);
+    }
+    if (origin[2] === "King") {
+      return this.#validKing(target);
+    }
+    // https://gamedev.stackexchange.com/questions/194405/in-a-chess-simulator-how-to-efficiently-determine-checkmate
+    // TO STORE THREATEN KING MOVE
+  }
+  #setTarget(target) {
     // ex: [ '5_0', '6_3', '5_2' ] string[0] string [2]
     // Handle same color overllap
     let holder2 = [];
-    holder.forEach((value) => {
+    console.log(target);
+    target.forEach((value) => {
       if (this.#PlayerColorBoard[value[0]][value[2]] !== this.#Player1Color) {
         holder2.push(value);
+        // if (this.#KingThread.indexOf(value) != -1) this.#KingThread.push(value);
       }
     });
     this.#CurrentTarget = holder2;
     return holder2;
+  }
+  #validKing(targets) {
+    // NOTE:
+    // ALREADY CHANGE PLAYER COLOR
+    // three case to check it's checkmate
+    // https://zh.wikipedia.org/zh-tw/%E5%B0%87%E8%BB%8D_(%E5%9C%8B%E9%9A%9B%E8%B1%A1%E6%A3%8B)
+    let hold = "-1";
+    // console.log(this.UserHistoryBoard);
+    // console.log(targets);
+    targets.forEach((value) => {
+      let color = this.#PlayerColorBoard[value[0]][value[2]];
+      if (color === this.#Player1Color || color === "") {
+        let target = Object.entries(this.getSearchHistory(value[0], value[2]));
+        if (!this.#KingThreat.has(value)) this.#KingThreat.set(value, null);
+        // Array(2)]0: (2) ['h5', '']length: 1[[Prototype]]: Array(0)
+        if (target[0][1] === "K") {
+          console.log("check");
+          this.#checkState = true;
+          hold = value;
+          (async () => {
+            let target1 = null;
+            if (this.#Player1Color === "W") {
+              target1 = await this.#Kingmove(
+                this.#KingLocate.WhiteY,
+                this.#KingLocate.WhiteX
+              );
+            }
+            if (this.#Player1Color === "B") {
+              target1 = await this.#Kingmove(
+                this.#KingLocate.BlackY,
+                this.#KingLocate.BlackX
+              );
+            }
+            let counter = 0;
+            target1.forEach((Kingval) => {
+              console.log(Kingval[0],Kingval[2]);
+              if (!this.#KingThreat.has(Kingval) && this.ColorBoard_XY(Kingval[0],Kingval[2])!=this.#Player1Color) 
+              counter++;
+            });
+            hold = -3;
+            this.CheckMate = true;
+            return hold;
+          })();
+        }
+      }
+    });
+    return hold;
   }
 }
