@@ -47,10 +47,10 @@ export default class Game extends GameBoard {
   get UserColorBoard() {
     return this.#PlayerColorBoard;
   }
-  setrecordCounter(){
+  setrecordCounter() {
     this.recordCounter++;
   }
-  get recordCounter(){
+  get recordCounter() {
     return this.recordCounter;
   }
   set UserColor(Color) {
@@ -242,13 +242,25 @@ export default class Game extends GameBoard {
     return new Promise((resolve) => {
       let test = [];
       if (this.#Player1Color === "W") {
-        if (y - 1 >= 0) test.push(`${y - 1}_${x}`);
-        if (y - 2 >= 0) test.push(`${y - 2}_${x}`);
-      }
-      else
-      {
-        if(y + 1 < 8) test.push(`${y+1}_${x}`)
-        if(y + 2 < 8) test.push(`${y+2}_${x}`)
+        // if (y === 6) {
+        //   test.push(`${y - 1}_${x}`);
+        //   test.push(`${y - 2}_${x}`);
+        // }
+        // else if (y - 1 >= 0 && this.ColorBoard_XY(y - 1, x) === "") test.push(`${y - 1}_${x}`);
+       if (this.ColorBoard_XY(y - 2, x) === "" && y ===6) test.push(`${y - 2}_${x}`);
+       if (this.ColorBoard_XY(y - 1, x) === "") test.push(`${y - 1}_${x}`);
+       if (this.ColorBoard_XY(y - 1, x - 1) === "B") test.push(`${y - 1}_${x - 1}`);
+       if (this.ColorBoard_XY(y - 1, x + 1) === "B") test.push(`${y - 1}_${x + 1}`);
+      } else {
+        // if (y === 1) {
+        //   test.push(`${y + 1}_${x}`);
+        //   test.push(`${y + 2}_${x}`);
+        // }
+        // else if (y + 1 < 8 && this.ColorBoard_XY(y+1,x) === "") test.push(`${y + 1}_${x}`);
+       if (this.ColorBoard_XY(y + 2, x) === "" && y === 1) test.push(`${y + 2}_${x}`);
+       if (this.ColorBoard_XY(y + 1, x) === "") test.push(`${y + 1}_${x}`);
+       if (this.ColorBoard_XY(y + 1, x - 1) === "W") test.push(`${y + 1}_${x - 1}`);
+       if (this.ColorBoard_XY(y + 1, x + 1) === "W") test.push(`${y + 1}_${x + 1}`);
       }
       console.log(test);
       resolve(test);

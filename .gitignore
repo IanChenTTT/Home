@@ -2,3 +2,4 @@
 /vendor
 /composer.phar
 composer.lock
+/classes/dbh.classes.php

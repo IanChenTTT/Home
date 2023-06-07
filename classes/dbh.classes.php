@@ -1,8 +1,8 @@
 <?php
 // IMPORTANT USE  var_dump($_SERVER['DOCUMENT_ROOT']) 
 // CHECK CURRENT APACHE DIRECTORY, might different from __DIR__
-require $_SERVER['DOCUMENT_ROOT'].'/Home/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable( $_SERVER['DOCUMENT_ROOT'].'/Home'); //Notice the Namespace and Class
+require $_SERVER['DOCUMENT_ROOT'].'/HWdoc/Home/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable( $_SERVER['DOCUMENT_ROOT'].'/HWdoc/Home'); //Notice the Namespace and Class
 $dotenv->load();
 
 //  $_ENV[""];
