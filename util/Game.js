@@ -406,6 +406,7 @@ export default class Game extends GameBoard {
         }
       }
     });
+
     return hold;
   }
 }
