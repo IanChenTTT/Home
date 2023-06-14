@@ -1,4 +1,4 @@
-<?php header("location:./includes/checkLogin.inc.php"); ?>
+<?php include "./includes/checkLogin.inc.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,12 +18,35 @@
 </head>
 
 <body>
+  <!-- <div class="navbar">
+    <a href="./index.php">Home</a>
+    <a href="http:localhost/Loby">Loby</a>
+
+    <a href="./views/data.php">record</a>
+    <a href="./views/contact.php">contact</a> -->
+    <!-- <div class="dropdown">
+  <button class="dropbtn" onclick="myFunction()">Dropdown
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-content" id="myDropdown">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+  </div>
+  </div>  -->
+  </div>
   <div id="wrapper">
     <nav>
       <img src="./image/BoardIcon.svg" alt="logo">
       <ul>
-        <li>歷程記錄</li>
-        <li>歷程記錄</li>
+        <li><a href="./index.php">Home</a></li>
+        <li><a href="./views/custom/index.php">custom</a></li>
+        <li>
+          <a href="./views/data.php">record</a>
+        </li>
+        <li>
+          <a href="./views/contact.php">contact</a>
+        </li>
         <?php
         if (!isset($_SESSION["userid"])) {
         ?>
@@ -66,29 +89,28 @@
         <div id="Back"></div>
       </main>
       <section id="section2">
-          <?php
+        <?php
         if (!isset($_SESSION["userid"])) {
         ?>
-        <div class="card">
-          <div class="card-content">
-            <h2 class="card-title">線上西洋棋對戰</h2>
-            <p class="card-body">歡迎來到線上西洋棋對戰!!!<br> 請登入遊戲或是創建帳號 </p>
-            <button class="button log">login</button>
-            <button class="button create">Create</button>
+          <div class="card">
+            <div class="card-content">
+              <h2 class="card-title">線上西洋棋對戰</h2>
+              <p class="card-body">歡迎來到線上西洋棋對戰!!!<br> 請登入遊戲或是創建帳號 </p>
+              <button class="button log">login</button>
+              <button class="button create">Create</button>
 
-          </div>
-        <?php }
-         else{
-        ?>
-        <div class="card">
-          <div class="card-content">
-            <h2 class="card-title">線上西洋棋對戰</h2>
-            <p class="card-body">歡迎來到線上西洋棋對戰!!!<br> 請登入遊戲或是創建帳號 </p>
-            <a href="localhost/Loby">前往大廳</a>
-          </div>
-          <?php
-          }
+            </div>
+          <?php } else {
           ?>
+            <div class="card">
+              <div class="card-content">
+                <h2 class="card-title">線上西洋棋對戰</h2>
+                <p class="card-body">歡迎來到線上西洋棋對戰!!!<br> 請登入遊戲或是創建帳號 </p>
+                <a href="localhost/Loby">前往大廳</a>
+              </div>
+            <?php
+          }
+            ?>
       </section>
     </div>
     <footer></footer>

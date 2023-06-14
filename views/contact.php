@@ -1,4 +1,4 @@
-<?php header("location:../includes/checkLogin.inc.php"); ?>
+<?php include  $_SERVER['DOCUMENT_ROOT']."/Home/includes/checkLogin.inc.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +9,41 @@
     <link rel="stylesheet" href="../Asset/contact.css">
 </head>
 
+    <nav>
+      <img src="../image/BoardIcon.svg" alt="logo">
+      <ul>
+        <li><a href="../index.php">Home</a></li>
+        <li><a href="./custom/index.php">custom</a></li>
+        <li>
+          <a href="./data.php">record</a>
+        </li>
+        <li>
+          <a href="./contact.php">contact</a>
+        </li>
+        <?php
+        if (!isset($_SESSION["userid"])) {
+        ?>
+          <li>
+            登入
+          </li>
+          <li>
+            建立
+          </li>
+        <?php
+        } else {
+        ?>
+          <li>
+            <?php echo $_SESSION["useruid"]; ?>
+            <img src="../image/user.svg" alt="">
+          </li>
+          <li>
+            <a href="includes/logout.inc.php">Logout</a>
+          </li>
+        <?php
+        }
+        ?>
+      </ul>
+    </nav>
 <body>
     <div class="container d-flex align-items-center justify-content-center position-relative flex-wrap">
         <div class="card d-flex position-relative flex-column">

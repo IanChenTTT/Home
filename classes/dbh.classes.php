@@ -25,6 +25,21 @@ class Dbh_class
             die();
         };
     }
+      public function connectGame()
+    {
+        try {
+            $username = "root";
+            $password = "";
+            $host = $_ENV["Host"];
+            $port = $_ENV["DB_PORT"];
+            $dbname = "game";
+            $dbh = new \PDO('mysql:host:' . $host . ';port=' . $port . ';dbname=' . $dbname, $username, $password);
+            return $dbh;
+        } catch (PDOException $err) {
+            print("error" . $err->getMessage() . "\n");
+            die();
+        };
+    }
     protected function session_connect()
     {
         $options = array(

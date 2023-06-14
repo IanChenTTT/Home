@@ -1,0 +1,97 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+nav {
+  height: 17vh;
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+  width: 99%;
+  gap: 4vw;
+  display: flex;
+  background-color: gray;
+}
+
+img {
+  flex: 21;
+}
+
+nav ul {
+  flex: 78;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: rgba(241, 236, 236, 0.863);
+}
+
+nav,
+a {
+  list-style-type: none;
+  align-self: center;
+  /* scale: 1.1; */
+}
+
+nav li {
+  align-self: center;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  /* color: white; */
+  /* background-color:#bcd5a3; */
+  font-size: clamp(0.5rem, 1.5rem + 1vw, 3.2rem);
+}
+
+nav li img {
+  width: 5rem;
+  height: 5rem;
+}
+nav li a{
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: black;
+}
+h1 {
+    color: var(--clr-neutral-900);
+    font-size: clamp(1.5rem, 2.5rem + 1vw, 3.2rem);
+}
+
+form {
+    margin-bottom: 1rem;
+}
+
+select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}
+
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th,
+td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--clr-neutral-900);
+}
+
+th {
+    font-weight: bold;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(207, 207, 207, 0.5);
+}
+
+.game:hover {
+    background-color: lightgreen;
+  }
