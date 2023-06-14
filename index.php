@@ -1,4 +1,4 @@
-<?php include("./includes/checkLogin.inc.php"); ?>
+<?php header("location:./includes/checkLogin.inc.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
